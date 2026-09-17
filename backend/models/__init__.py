@@ -1,0 +1,3 @@
+"""
+STRADEXI backend data models.
+"""
