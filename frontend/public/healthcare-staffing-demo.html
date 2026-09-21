@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>STRADEXI — Healthcare Staffing Workflow Demo</title>
+<meta name="description" content="Interactive STRADEXI healthcare staffing workflow automation demo." />
+<style>
+:root{--bg:#07100e;--panel:#0c1714;--panel2:#0f1e1a;--line:#20312c;--text:#eef8f4;--muted:#9ab0a8;--green:#35d092;--green2:#a1f0c9;--warn:#f4c66a;--red:#ff8b8b;--shadow:0 22px 80px rgba(0,0,0,.38)}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at 75% 0%,rgba(53,208,146,.13),transparent 32%),linear-gradient(180deg,#06100d 0%,#07110f 45%,#08110f 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
+.wrap{max-width:1180px;margin:auto;padding:28px 22px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:44px}.brand{font-weight:800;letter-spacing:.18em;font-size:14px}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px;background:rgba(255,255,255,.025)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center;margin-bottom:46px}.eyebrow{color:var(--green2);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}.hero h1{font-size:clamp(38px,5vw,68px);line-height:.98;letter-spacing:-.045em;margin:13px 0 17px;max-width:720px}.hero p{color:var(--muted);font-size:17px;max-width:650px;margin:0 0 24px}.actions{display:flex;flex-wrap:wrap;gap:11px}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;cursor:pointer}.btn.primary{background:var(--green);color:#062016;border-color:var(--green)}.btn:hover{transform:translateY(-1px)}
+.hero-card{background:linear-gradient(180deg,rgba(20,42,34,.88),rgba(9,22,18,.95));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-card:before{content:"";position:absolute;inset:-30% -10% auto auto;width:220px;height:220px;background:radial-gradient(circle,rgba(53,208,146,.2),transparent 70%);pointer-events:none}.mini{font-size:11px;color:var(--muted);letter-spacing:.11em;text-transform:uppercase}.statline{display:flex;justify-content:space-between;align-items:end;margin:8px 0 18px}.big{font-size:34px;font-weight:800;letter-spacing:-.03em}.ok{color:var(--green2)}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin:40px 0 16px}.section-title h2{font-size:24px;margin:0;letter-spacing:-.03em}.section-title p{margin:0;color:var(--muted);font-size:13px}
+.workflow{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:18px}.node{background:rgba(255,255,255,.028);border:1px solid var(--line);border-radius:12px;padding:12px 10px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between;transition:.25s}.node.active{border-color:rgba(53,208,146,.75);box-shadow:0 0 0 1px rgba(53,208,146,.15),0 12px 35px rgba(53,208,146,.08)}.node.done{background:rgba(53,208,146,.06)}.node .n{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}.node .t{font-weight:750;font-size:13px}.node .s{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:16px;padding:18px}.panel h3{margin:0 0 14px;font-size:15px}.rows{display:grid;gap:10px}.row{display:flex;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}.row:first-child{border-top:0;padding-top:0}.label{color:var(--muted);font-size:12px}.value{font-size:13px;font-weight:650;text-align:right}.badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:4px 8px;display:inline-block}.badge.ok{border-color:rgba(53,208,146,.4)}.badge.warn{border-color:rgba(244,198,106,.4);color:var(--warn)}
+.toggle{display:flex;gap:8px;padding:5px;background:#06100e;border:1px solid var(--line);border-radius:11px;width:max-content}.toggle button{border:0;background:transparent;color:var(--muted);padding:8px 11px;border-radius:7px;font-weight:700;font-size:12px;cursor:pointer}.toggle button.on{background:var(--green);color:#062016}.manual-list,.auto-list{display:grid;gap:8px;margin-top:14px}.task{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:5px;flex:0 0 auto}.manual .dot{background:var(--warn)}
+.control{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(53,208,146,.08),rgba(255,255,255,.02))}.progress{height:7px;background:#091510;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:8px}.progress>i{display:block;height:100%;width:0;background:var(--green);transition:width .45s ease}
+.feed{display:grid;gap:9px;max-height:250px;overflow:auto}.event{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:9px}.time{color:#728a81;font-size:11px;min-width:54px}.event strong{font-size:12px}.event span{display:block;color:var(--muted);font-size:11px}
+.callout{margin-top:16px;padding:16px;border:1px solid rgba(53,208,146,.24);border-radius:14px;background:rgba(53,208,146,.045)}.callout strong{display:block;margin-bottom:4px}.callout p{margin:0;color:var(--muted);font-size:12px}
+.footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;align-items:center;color:var(--muted);font-size:12px}.footer a{color:var(--green2);text-decoration:none}
+@media(max-width:980px){.hero{grid-template-columns:1fr}.workflow{grid-template-columns:repeat(4,1fr)}}@media(max-width:650px){.wrap{padding:20px 14px 42px}.workflow{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.top{margin-bottom:32px}.footer{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand">STRADEXI</div><div class="pill">Healthcare Staffing · Workflow Automation Demo</div></div>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">2-minute workflow demo</div>
+      <h1>Automate the work between recruiting, credentialing and operations.</h1>
+      <p>See how STRADEXI can connect repetitive staffing handoffs without replacing the ATS, VMS or core systems already in place.</p>
+      <div class="actions"><button class="btn primary" id="runTop">▶ Run workflow</button><a class="btn" href="https://cal.com/sanjana-jaat-kuifve/30min" target="_blank" rel="noopener">Book a workflow review</a></div>
+    </div>
+    <div class="hero-card">
+      <div class="mini">Sample candidate</div>
+      <div class="statline"><div><div class="big">Aisha Khan</div><div class="mini">ICU Registered Nurse · Chicago</div></div><div class="ok">94% match</div></div>
+      <div class="rows">
+        <div class="row"><span class="label">License</span><span class="value"><span class="badge ok">Verified</span></span></div>
+        <div class="row"><span class="label">BLS</span><span class="value"><span class="badge ok">Valid</span></span></div>
+        <div class="row"><span class="label">References</span><span class="value"><span class="badge warn">1 pending</span></span></div>
+        <div class="row"><span class="label">Availability</span><span class="value">Immediate</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-title"><div><h2>Automation pipeline</h2><p>Click Run Workflow to watch the candidate move through the process.</p></div><span class="pill" id="runState">Ready</span></div>
+  <div class="workflow" id="workflow">
+    <div class="node" data-i="0"><span class="n">01</span><span class="t">Candidate Applies</span><span class="s">Resume received</span></div>
+    <div class="node" data-i="1"><span class="n">02</span><span class="t">AI Extract</span><span class="s">Structured profile</span></div>
+    <div class="node" data-i="2"><span class="n">03</span><span class="t">Screen</span><span class="s">Requirements checked</span></div>
+    <div class="node" data-i="3"><span class="n">04</span><span class="t">Credential Check</span><span class="s">Documents + status</span></div>
+    <div class="node" data-i="4"><span class="n">05</span><span class="t">Job Match</span><span class="s">Role fit scored</span></div>
+    <div class="node" data-i="5"><span class="n">06</span><span class="t">Recruiter Alert</span><span class="s">Action routed</span></div>
+    <div class="node" data-i="6"><span class="n">07</span><span class="t">Follow-up</span><span class="s">Reminder created</span></div>
+    <div class="node" data-i="7"><span class="n">08</span><span class="t">ATS Update</span><span class="s">Status synchronized</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Manual vs STRADEXI</h3>
+      <div class="toggle"><button class="on" data-mode="auto">STRADEXI</button><button data-mode="manual">Manual</button></div>
+      <div id="modeContent" class="auto-list">
+        <div class="task"><i class="dot"></i><span>Extract candidate data from the application</span></div>
+        <div class="task"><i class="dot"></i><span>Trigger credential reminders for missing items</span></div>
+        <div class="task"><i class="dot"></i><span>Route ready candidates to the right recruiter</span></div>
+        <div class="task"><i class="dot"></i><span>Update status and schedule follow-up automatically</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Workflow execution</h3>
+      <div class="control"><div><strong id="execTitle">Ready to run</strong><div class="mini" id="execSub">Simulation only · no real candidate data</div></div><button class="btn primary" id="runBtn">Run workflow</button></div>
+      <div class="progress"><i id="bar"></i></div>
+      <div class="feed" id="feed" style="margin-top:14px">
+        <div class="event"><div class="time">Ready</div><div><strong>Demo loaded</strong><span>Awaiting workflow trigger.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>What the recruiter sees</h3>
+    <div class="rows">
+      <div class="row"><span class="label">Candidate</span><span class="value">Aisha Khan · ICU RN</span></div>
+      <div class="row"><span class="label">Best match</span><span class="value">Chicago ICU Travel RN · 94%</span></div>
+      <div class="row"><span class="label">Credential status</span><span class="value"><span class="badge warn">1 item pending</span></span></div>
+      <div class="row"><span class="label">Next action</span><span class="value">Credential reminder + recruiter alert</span></div>
+    </div>
+    <div class="callout"><strong>The point isn't another system.</strong><p>STRADEXI is designed to automate the repetitive handoffs between the systems, teams, inboxes and spreadsheets your operation already uses.</p></div>
+  </div>
+
+  <div class="footer"><span>© 2026 STRADEXI · Demo uses fictional sample data.</span><a href="https://stradexi.com" target="_blank" rel="noopener">stradexi.com ↗</a></div>
+</div>
+<script>
+const nodes=[...document.querySelectorAll('.node')], bar=document.getElementById('bar'), feed=document.getElementById('feed'), state=document.getElementById('runState'), title=document.getElementById('execTitle'), sub=document.getElementById('execSub');
+let running=false, timers=[];
+const events=[
+ ['Application received','Resume captured from candidate application.'],
+ ['Profile extracted','Name, specialty, experience, license and availability structured.'],
+ ['Screening complete','Required skills and baseline criteria checked.'],
+ ['Credential check started','License, certification and document status evaluated.'],
+ ['Job matched','Chicago ICU Travel RN matched at 94%.'],
+ ['Recruiter notified','Recruiter alert created with candidate context.'],
+ ['Follow-up scheduled','Reminder created for the pending reference.'],
+ ['ATS updated','Candidate workflow status synchronized.']
+];
+function clearTimers(){timers.forEach(clearTimeout);timers=[]}
+function addEvent(i){const d=document.createElement('div');d.className='event';d.innerHTML=`<div class="time">now</div><div><strong>${events[i][0]}</strong><span>${events[i][1]}</span></div>`;feed.prepend(d)}
+function run(){if(running)return;running=true;clearTimers();nodes.forEach(n=>n.classList.remove('active','done'));bar.style.width='0%';state.textContent='Running';title.textContent='Executing workflow';sub.textContent='Simulation only · fictional sample candidate';feed.innerHTML='';
+for(let i=0;i<nodes.length;i++){
+ timers.push(setTimeout(()=>{
+   if(i>0) nodes[i-1].classList.remove('active');
+   nodes[i].classList.add('active','done');
+   bar.style.width=((i+1)/nodes.length*100)+'%'; addEvent(i);
+   if(i===nodes.length-1){nodes[i].classList.remove('active');state.textContent='Complete';title.textContent='Workflow complete';sub.textContent='All demo steps executed';running=false;}
+ },i*700));
+}}
+document.getElementById('runBtn').onclick=run;document.getElementById('runTop').onclick=run;
+for(const b of document.querySelectorAll('.toggle button')) b.onclick=()=>{document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('on'));b.classList.add('on');const c=document.getElementById('modeContent');if(b.dataset.mode==='manual'){c.className='manual-list';c.innerHTML='<div class="task"><i class="dot"></i><span>Recruiter downloads resume and re-enters candidate data</span></div><div class="task"><i class="dot"></i><span>Credentialing team requests and chases missing documents</span></div><div class="task"><i class="dot"></i><span>Recruiter checks status and messages the team</span></div><div class="task"><i class="dot"></i><span>Someone manually updates ATS status and follow-up</span></div>'}else{c.className='auto-list';c.innerHTML='<div class="task"><i class="dot"></i><span>Extract candidate data from the application</span></div><div class="task"><i class="dot"></i><span>Trigger credential reminders for missing items</span></div><div class="task"><i class="dot"></i><span>Route ready candidates to the right recruiter</span></div><div class="task"><i class="dot"></i><span>Update status and schedule follow-up automatically</span></div>'}};
+</script>
+</body>
+</html>
