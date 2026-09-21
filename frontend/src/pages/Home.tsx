@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/Reveal";
 import { industries, portfolioProjects } from "@/lib/content";
+import HealthcareOutreachDemo from "@/components/HealthcareOutreachDemo";
 
 const workflowStages = [
   "Email",
@@ -64,6 +65,8 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       <Hero />
+
+      <HealthcareOutreachDemo />
 
       <section className="relative border-y border-white/5 py-5">
         <div className="overflow-hidden">
